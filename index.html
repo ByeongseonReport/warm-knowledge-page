@@ -233,7 +233,7 @@ function renderGrid(containerId, items) {
     <a class="card" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
       <div class="thumb-wrap">
         <span class="rank">${v.rank}</span>
-        <img src="${thumbUrl(v.id)}" alt="${v.title.replace(/"/g, '&quot;')}" loading="lazy">
+        <img src="${thumbUrl(v.id)}" alt="${v.title.replace(/"/g, '&quot;')}">
       </div>
       <div class="card-body">
         <div class="title">${v.title}</div>
