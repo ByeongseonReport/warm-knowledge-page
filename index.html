@@ -153,6 +153,40 @@
     padding: 20px;
     border-top: 1px solid var(--border);
   }
+  .insights {
+    background: linear-gradient(135deg, #fff9f2 0%, #fef2e8 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 40px;
+  }
+  .insights h2 {
+    font-size: 18px;
+    margin: 0 0 4px;
+  }
+  .insights .insights-desc {
+    color: var(--text-mute);
+    font-size: 12.5px;
+    margin: 0 0 18px;
+  }
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .insight-item h3 {
+    font-size: 14px;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .insight-item p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    color: #4a3f37;
+  }
 </style>
 </head>
 <body>
@@ -162,6 +196,25 @@
   <div class="updated" id="updatedBadge">최근 갱신: 2026-07-15</div>
 </header>
 <main>
+
+  <div class="insights">
+    <h2>📈 이번 회차 트렌드 인사이트</h2>
+    <p class="insights-desc">아래 국내 영상 목록을 바탕으로 자동 요약. 콘텐츠 기획 참고용이며 매 갱신마다 새로 작성됩니다.</p>
+    <div class="insight-grid">
+      <div class="insight-item">
+        <h3>🔥 반복 등장 핫 토픽</h3>
+        <p id="insightHot"></p>
+      </div>
+      <div class="insight-item">
+        <h3>✍️ 제목·훅 패턴</h3>
+        <p id="insightTitle"></p>
+      </div>
+      <div class="insight-item">
+        <h3>🎬 포맷·길이 트렌드</h3>
+        <p id="insightFormat"></p>
+      </div>
+    </div>
+  </div>
 
   <section class="group">
     <div class="group-title">
@@ -188,26 +241,26 @@
 
 <script>
 const DOMESTIC = [
-  {rank:1, title:"아무리 적자가 나도 절대 문 안 닫는 곳이 있다???(feat.은행 이자 쌓여가는 하나로마트) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"VbOzwUucQno", views:"62만회", uploaded:"1일 전"},
-  {rank:2, title:"미쳐돌아가는 장윤기 사건 근황｜크랩", channel:"KBS 크랩", id:"YM03DAP_rCY", views:"50만회", uploaded:"17시간 전"},
-  {rank:3, title:"이번 월드컵 4강전이 결승보다 기대되는 이유｜크랩", channel:"KBS 크랩", id:"XRSLXUSVEIU", views:"27만회", uploaded:"15시간 전"},
-  {rank:4, title:"이원일도 당황한 역대급 의뢰! 치킨스톡도 모르는데 닭볶음탕집을 7년째 운영 하셨다고요...? | EP.03 맛 고추기름 닭볶음탕", channel:"사피엔스 스튜디오", id:"0VTrCeSL40c", views:"24만회", uploaded:"1일 전"},
-  {rank:5, title:"자, 이제 일본의 반응이 궁금해지네?｜크랩", channel:"KBS 크랩", id:"IlR_RbE8QKI", views:"23만회", uploaded:"1일 전"},
-  {rank:6, title:"이스라엘이 아무리 폭격해도 헤즈볼라가 망하지 않는 이유 (박현도X윤영휘)ㅣ10분 토론 / 14F", channel:"MBC 14F", id:"Q3UFvK-fY2U", views:"16만회", uploaded:"3일 전"},
-  {rank:7, title:"동맹국끼리 이러기야? 독일 검찰이 밝힌 용의자의 충격적인 정체 (+목적) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"hug_1wZouTA", views:"15만회", uploaded:"3일 전"},
-  {rank:8, title:"치즈 크러스트 꼬다리로 업계 신화 쓴 피자헛 왜 이렇게 됐을까ㅣ돈슐랭 / 14F", channel:"MBC 14F", id:"eGiB0aCIous", views:"13만회", uploaded:"1일 전"},
-  {rank:9, title:"운동회 소음 민원, 법으로 해결할 수 있을까?｜크랩", channel:"KBS 크랩", id:"o6AmNgi1Wq4", views:"10만회", uploaded:"3일 전"},
-  {rank:10, title:"'월세 시대' 오면 벌어지는 일 [모아봤소] / 스브스뉴스", channel:"SBS 스브스뉴스", id:"CLIT45XY8GU", views:"8.7만회", uploaded:"3일 전"},
-  {rank:11, title:"무언가를 버티느라 숨을 참고 있지는 않나요? '숨'만 잘 쉬어도 '쉼'이 됩니다⎮적수다 x OLIVE BETTER EP.03", channel:"사피엔스 스튜디오", id:"t3qn_0UEpAE", views:"5.7만회", uploaded:"17시간 전"},
-  {rank:12, title:"\"이게 고작 1만 원짜리??\" 초저가 위스키로 고급진 맛 폭발하는 하이볼 만드는 법 | 주락이월드 / 14F", channel:"MBC 14F", id:"iN6_Wp6W22g", views:"4.5만회", uploaded:"2일 전"},
-  {rank:13, title:"엔비디아 칩 급 허용한 중국의 속내 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wx-cqOOjq6w", views:"4.5만회", uploaded:"2일 전"},
-  {rank:14, title:"장윤기 사건, 경찰은 증거를 인멸했다 / 스브스뉴스", channel:"SBS 스브스뉴스", id:"E4miaWPugng", views:"4.2만회", uploaded:"1일 전"},
-  {rank:15, title:"상장 폐지 위기에 모나미 구출 작전… 모나미 송재화 사장의 자필 편지 / 14F", channel:"MBC 14F", id:"RxD6kWqhDQE", views:"4만회", uploaded:"1일 전"},
-  {rank:16, title:"'전자담배, 보조배터리, 액체류'… 올여름 해외여행 주의 사항 총정리 / 14F", channel:"MBC 14F", id:"_xOyoUc2ptI", views:"1.5만회", uploaded:"18시간 전"},
-  {rank:17, title:"우리가 아는 복날에는 특별한 의미가 있다 | '엎드릴 복(伏)'에 담긴 선조들의 여름 나기 지혜 | #지식채널e", channel:"EBS 지식채널e", id:"T0WOg2wRv9s", views:"1.4만회", uploaded:"3일 전"},
-  {rank:18, title:"\"비상구 어디 있는지 몰라...\" 생존자가 전한 화재 당시 상황 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wgGrLpxsECQ", views:"1.3만회", uploaded:"17시간 전"},
-  {rank:19, title:"지루하면 바로 동태눈 되는 원소윤을 생태눈 만든 그 남자 [우리 사이엔 편지가 있다] EP.6 원소윤", channel:"SBS 스브스뉴스", id:"sRMn4UYl2Dw", views:"1.2만회", uploaded:"17시간 전"},
-  {rank:20, title:"전 세계가 빠져든 인터넷 괴담 '백룸' | 텅 빈 공간이 공포가 되는 과학적 이유 | #지식채널e", channel:"EBS 지식채널e", id:"2xOWnFS0PkA", views:"2.3천회", uploaded:"17시간 전"}
+  {rank:1, title:"아무리 적자가 나도 절대 문 안 닫는 곳이 있다???(feat.은행 이자 쌓여가는 하나로마트) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"VbOzwUucQno", views:"63만회", uploaded:"1일 전"},
+  {rank:2, title:"미쳐돌아가는 장윤기 사건 근황｜크랩", channel:"KBS 크랩", id:"YM03DAP_rCY", views:"60만회", uploaded:"22시간 전"},
+  {rank:3, title:"아르헨티나 vs 잉글랜드가 월드컵 최고의 빅매치인 이유｜크랩", channel:"KBS 크랩", id:"XRSLXUSVEIU", views:"31만회", uploaded:"20시간 전"},
+  {rank:4, title:"이원일도 당황한 역대급 의뢰! 치킨스톡도 모르는데 닭볶음탕집을 7년째 운영 하셨다고요...? | EP.03 맛 고추기름 닭볶음탕", channel:"사피엔스 스튜디오", id:"0VTrCeSL40c", views:"27만회", uploaded:"1일 전"},
+  {rank:5, title:"(공) 독도는 우리땅 (식)｜크랩", channel:"KBS 크랩", id:"IlR_RbE8QKI", views:"24만회", uploaded:"1일 전"},
+  {rank:6, title:"치즈 크러스트 꼬다리로 업계 신화 쓴 피자헛 왜 이렇게 됐을까ㅣ돈슐랭 / 14F", channel:"MBC 14F", id:"eGiB0aCIous", views:"14만회", uploaded:"1일 전"},
+  {rank:7, title:"운동회 소음 민원, 법으로 해결할 수 있을까?｜크랩", channel:"KBS 크랩", id:"o6AmNgi1Wq4", views:"10만회", uploaded:"3일 전"},
+  {rank:8, title:"무언가를 버티느라 숨을 참고 있지는 않나요? '숨'만 잘 쉬어도 '쉼'이 됩니다⎮적수다 x OLIVE BETTER EP.03", channel:"사피엔스 스튜디오", id:"t3qn_0UEpAE", views:"6.5만회", uploaded:"22시간 전"},
+  {rank:9, title:"\"이게 고작 1만 원짜리??\" 초저가 위스키로 고급진 맛 폭발하는 하이볼 만드는 법 | 주락이월드 / 14F", channel:"MBC 14F", id:"iN6_Wp6W22g", views:"4.6만회", uploaded:"2일 전"},
+  {rank:10, title:"장윤기 사건, 경찰은 증거를 인멸했다 / 스브스뉴스", channel:"SBS 스브스뉴스", id:"E4miaWPugng", views:"4.5만회", uploaded:"1일 전"},
+  {rank:11, title:"엔비디아 칩 급 허용한 중국의 속내 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wx-cqOOjq6w", views:"4.5만회", uploaded:"3일 전"},
+  {rank:12, title:"상장 폐지 위기에 모나미 구출 작전… 모나미 송재화 사장의 자필 편지 / 14F", channel:"MBC 14F", id:"RxD6kWqhDQE", views:"4만회", uploaded:"1일 전"},
+  {rank:13, title:"'월세 시대' 오면 벌어지는 일 [모아봤소] / 스브스뉴스", channel:"SBS 스브스뉴스", id:"CLIT45XY8GU", views:"8.7만회", uploaded:"3일 전"},
+  {rank:14, title:"'전자담배, 보조배터리, 액체류'… 올여름 해외여행 주의 사항 총정리 / 14F", channel:"MBC 14F", id:"_xOyoUc2ptI", views:"1.5만회", uploaded:"18시간 전"},
+  {rank:15, title:"우리가 아는 복날에는 특별한 의미가 있다 | '엎드릴 복(伏)'에 담긴 선조들의 여름 나기 지혜 | #지식채널e", channel:"EBS 지식채널e", id:"T0WOg2wRv9s", views:"1.4만회", uploaded:"3일 전"},
+  {rank:16, title:"\"비상구 어디 있는지 몰라...\" 생존자가 전한 화재 당시 상황 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wgGrLpxsECQ", views:"1.3만회", uploaded:"17시간 전"},
+  {rank:17, title:"지루하면 바로 동태눈 되는 원소윤을 생태눈 만든 그 남자 [우리 사이엔 편지가 있다] EP.6 원소윤", channel:"SBS 스브스뉴스", id:"sRMn4UYl2Dw", views:"1.2만회", uploaded:"17시간 전"},
+  {rank:18, title:"전 세계가 빠져든 인터넷 괴담 '백룸' | 텅 빈 공간이 공포가 되는 과학적 이유 | #지식채널e", channel:"EBS 지식채널e", id:"2xOWnFS0PkA", views:"2.3천회", uploaded:"17시간 전"},
+  {rank:19, title:"이스라엘이 아무리 폭격해도 헤즈볼라가 망하지 않는 이유 (박현도X윤영휘)ㅣ10분 토론 / 14F", channel:"MBC 14F", id:"Q3UFvK-fY2U", views:"16만회", uploaded:"3일 전"},
+  {rank:20, title:"동맹국끼리 이러기야? 독일 검찰이 밝힌 용의자의 충격적인 정체 (+목적) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"hug_1wZouTA", views:"15만회", uploaded:"3일 전"}
 ];
 
 const INTL = [
@@ -222,6 +275,12 @@ const INTL = [
   {rank:9, title:"Why Is Everyone 'Maxxing' These Days?", channel:"CNBC Make It", id:"SH73brQhLU4", views:"1.5만회", uploaded:"3일 전"},
   {rank:10, title:"How Lifelike AI Became Amarillo's Face — And A New Gateway To City Services", channel:"Business Insider", id:"6-FkRpJvDEM", views:"7.3천회", uploaded:"1일 전"}
 ];
+
+const INSIGHTS = {
+  hot: "'장윤기 사건'을 KBS 크랩과 SBS 스브스뉴스가 동시에 후속 보도로 다뤄 사회 이슈 후속 콘텐츠의 반복 소비가 뚜렷했습니다. 이스라엘·헤즈볼라, 독일 용의자, 엔비디아·중국 등 국제 이슈 스낵 설명 콘텐츠도 꾸준히 등장했고, 월드컵 4강전·독도 이슈처럼 시의성 있는 이벤트에 올라탄 콘텐츠도 반응이 좋았습니다.",
+  title: "물음표·말줄임표(?, ...?, !!!)로 끝나는 구어체 질문형 제목이 다수였고, 괄호로 부연 설명을 미리 붙이는 방식(feat., +목적, EP.03)이 자주 쓰였습니다. '1만 원짜리', '7년째'처럼 구체적 숫자를 앞세워 궁금증을 자극하는 훅도 눈에 띕니다.",
+  format: "크랩·스브스뉴스·비디오머그류는 3~8분대 단문 설명형이 주력이라 원주MBC 숏폼과 결이 가장 비슷하고, 14F는 1~3분 브리핑형으로 더 짧습니다. 사피엔스 스튜디오는 인터뷰·토크 포맷이라 상대적으로 길게 갑니다. (정확한 러닝타임은 다음 갱신부터 함께 수집해 더 정밀하게 반영할 예정)"
+};
 
 function thumbUrl(id) {
   return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
@@ -248,6 +307,9 @@ function renderGrid(containerId, items) {
 
 renderGrid('domesticGrid', DOMESTIC);
 renderGrid('intlGrid', INTL);
+document.getElementById('insightHot').textContent = INSIGHTS.hot;
+document.getElementById('insightTitle').textContent = INSIGHTS.title;
+document.getElementById('insightFormat').textContent = INSIGHTS.format;
 </script>
 </body>
 </html>
