@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 말랑 교양 큐레이션</title>
+<style>
+  :root {
+    --bg: #fdf8f1;
+    --card: #ffffff;
+    --accent: #ff8a5c;
+    --accent-soft: #ffe3d3;
+    --text: #2f2a26;
+    --text-mute: #8a7f75;
+    --border: #f0e4d8;
+    --intl: #5c9eff;
+    --intl-soft: #e2edff;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    line-height: 1.5;
+  }
+  header {
+    padding: 40px 24px 28px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff3e9 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    margin: 4px 0;
+    color: var(--text-mute);
+    font-size: 14px;
+  }
+  .updated {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    color: #c1522a;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  section.group { margin-bottom: 48px; }
+  .group-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .group-title h2 {
+    font-size: 19px;
+    margin: 0;
+  }
+  .group-title span.badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .badge.domestic { background: var(--accent-soft); color: #c1522a; }
+  .badge.intl { background: var(--intl-soft); color: #2f5fb3; }
+  .group-desc {
+    color: var(--text-mute);
+    font-size: 13px;
+    margin: 0 0 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  a.card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+  }
+  a.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(120, 90, 60, 0.12);
+  }
+  .thumb-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #eee;
+    overflow: hidden;
+  }
+  .thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .rank {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .card-body { padding: 12px 14px 14px; }
+  .card-body .title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 38px;
+  }
+  .card-body .meta {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-mute);
+  }
+  .card-body .channel {
+    font-weight: 600;
+    color: var(--text);
+  }
+  footer {
+    text-align: center;
+    color: var(--text-mute);
+    font-size: 12px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🍯 오늘의 말랑 교양 큐레이션</h1>
+  <p>KBS 크랩·MBC 14F처럼 따뜻하고 말랑한 톤의 지식·교양 콘텐츠를 매일 모아드립니다</p>
+  <div class="updated" id="updatedBadge">최근 갱신: 2026-07-15</div>
+</header>
+<main>
+
+  <section class="group">
+    <div class="group-title">
+      <h2>국내 인기 교양 영상</h2>
+      <span class="badge domestic">최근 3일 · 상위 20</span>
+    </div>
+    <p class="group-desc">KBS 크랩, MBC 14F, SBS 스브스뉴스·비디오머그, EBS 지식채널e, 사피엔스 스튜디오 등에서 최근 3일간 업로드된 영상 중 조회수 상위 20개</p>
+    <div class="grid" id="domesticGrid"></div>
+  </section>
+
+  <section class="group">
+    <div class="group-title">
+      <h2>해외 유사 톤 채널 인기 영상</h2>
+      <span class="badge intl">최근 7일 · 상위 10</span>
+    </div>
+    <p class="group-desc">Vox, TED-Ed, Business Insider, CNBC Make It, Half as Interesting 등 국내 채널과 결이 비슷한 해외 채널의 최근 7일 인기 영상 (해외 채널은 업로드 빈도가 낮아 기간을 7일로 넓혔습니다)</p>
+    <div class="grid" id="intlGrid"></div>
+  </section>
+
+</main>
+<footer>
+  매일 자동으로 다시 조사되어 갱신됩니다 · 조회수는 조사 시점 기준 근사치입니다
+</footer>
+
+<script>
+const DOMESTIC = [
+  {rank:1, title:"아무리 적자가 나도 절대 문 안 닫는 곳이 있다???(feat.은행 이자 쌓여가는 하나로마트) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"VbOzwUucQno", views:"62만회", uploaded:"1일 전"},
+  {rank:2, title:"미쳐돌아가는 장윤기 사건 근황｜크랩", channel:"KBS 크랩", id:"YM03DAP_rCY", views:"50만회", uploaded:"17시간 전"},
+  {rank:3, title:"이번 월드컵 4강전이 결승보다 기대되는 이유｜크랩", channel:"KBS 크랩", id:"XRSLXUSVEIU", views:"27만회", uploaded:"15시간 전"},
+  {rank:4, title:"이원일도 당황한 역대급 의뢰! 치킨스톡도 모르는데 닭볶음탕집을 7년째 운영 하셨다고요...? | EP.03 맛 고추기름 닭볶음탕", channel:"사피엔스 스튜디오", id:"0VTrCeSL40c", views:"24만회", uploaded:"1일 전"},
+  {rank:5, title:"자, 이제 일본의 반응이 궁금해지네?｜크랩", channel:"KBS 크랩", id:"IlR_RbE8QKI", views:"23만회", uploaded:"1일 전"},
+  {rank:6, title:"이스라엘이 아무리 폭격해도 헤즈볼라가 망하지 않는 이유 (박현도X윤영휘)ㅣ10분 토론 / 14F", channel:"MBC 14F", id:"Q3UFvK-fY2U", views:"16만회", uploaded:"3일 전"},
+  {rank:7, title:"동맹국끼리 이러기야? 독일 검찰이 밝힌 용의자의 충격적인 정체 (+목적) / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"hug_1wZouTA", views:"15만회", uploaded:"3일 전"},
+  {rank:8, title:"치즈 크러스트 꼬다리로 업계 신화 쓴 피자헛 왜 이렇게 됐을까ㅣ돈슐랭 / 14F", channel:"MBC 14F", id:"eGiB0aCIous", views:"13만회", uploaded:"1일 전"},
+  {rank:9, title:"운동회 소음 민원, 법으로 해결할 수 있을까?｜크랩", channel:"KBS 크랩", id:"o6AmNgi1Wq4", views:"10만회", uploaded:"3일 전"},
+  {rank:10, title:"'월세 시대' 오면 벌어지는 일 [모아봤소] / 스브스뉴스", channel:"SBS 스브스뉴스", id:"CLIT45XY8GU", views:"8.7만회", uploaded:"3일 전"},
+  {rank:11, title:"무언가를 버티느라 숨을 참고 있지는 않나요? '숨'만 잘 쉬어도 '쉼'이 됩니다⎮적수다 x OLIVE BETTER EP.03", channel:"사피엔스 스튜디오", id:"t3qn_0UEpAE", views:"5.7만회", uploaded:"17시간 전"},
+  {rank:12, title:"\"이게 고작 1만 원짜리??\" 초저가 위스키로 고급진 맛 폭발하는 하이볼 만드는 법 | 주락이월드 / 14F", channel:"MBC 14F", id:"iN6_Wp6W22g", views:"4.5만회", uploaded:"2일 전"},
+  {rank:13, title:"엔비디아 칩 급 허용한 중국의 속내 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wx-cqOOjq6w", views:"4.5만회", uploaded:"2일 전"},
+  {rank:14, title:"장윤기 사건, 경찰은 증거를 인멸했다 / 스브스뉴스", channel:"SBS 스브스뉴스", id:"E4miaWPugng", views:"4.2만회", uploaded:"1일 전"},
+  {rank:15, title:"상장 폐지 위기에 모나미 구출 작전… 모나미 송재화 사장의 자필 편지 / 14F", channel:"MBC 14F", id:"RxD6kWqhDQE", views:"4만회", uploaded:"1일 전"},
+  {rank:16, title:"'전자담배, 보조배터리, 액체류'… 올여름 해외여행 주의 사항 총정리 / 14F", channel:"MBC 14F", id:"_xOyoUc2ptI", views:"1.5만회", uploaded:"18시간 전"},
+  {rank:17, title:"우리가 아는 복날에는 특별한 의미가 있다 | '엎드릴 복(伏)'에 담긴 선조들의 여름 나기 지혜 | #지식채널e", channel:"EBS 지식채널e", id:"T0WOg2wRv9s", views:"1.4만회", uploaded:"3일 전"},
+  {rank:18, title:"\"비상구 어디 있는지 몰라...\" 생존자가 전한 화재 당시 상황 / 머그인사이트 / 비디오머그", channel:"SBS 비디오머그", id:"wgGrLpxsECQ", views:"1.3만회", uploaded:"17시간 전"},
+  {rank:19, title:"지루하면 바로 동태눈 되는 원소윤을 생태눈 만든 그 남자 [우리 사이엔 편지가 있다] EP.6 원소윤", channel:"SBS 스브스뉴스", id:"sRMn4UYl2Dw", views:"1.2만회", uploaded:"17시간 전"},
+  {rank:20, title:"전 세계가 빠져든 인터넷 괴담 '백룸' | 텅 빈 공간이 공포가 되는 과학적 이유 | #지식채널e", channel:"EBS 지식채널e", id:"2xOWnFS0PkA", views:"2.3천회", uploaded:"17시간 전"}
+];
+
+const INTL = [
+  {rank:1, title:"The Illegal Business Of Fake World Cup Jerseys", channel:"Business Insider", id:"RZGsfvFXStY", views:"40만회", uploaded:"2일 전"},
+  {rank:2, title:"How does the space station never run out of oxygen? - Alvaro Romero-Calvo and Theo St Francis", channel:"TED-Ed", id:"5ljV0Vxu00M", views:"28만회", uploaded:"7일 전"},
+  {rank:3, title:"Are soccer players the most fit athletes on the planet?", channel:"Vox", id:"NB2BqMYslAo", views:"26만회", uploaded:"7일 전"},
+  {rank:4, title:"The Tests to Determine If AI Is Smarter Than a Person", channel:"Half as Interesting", id:"gExsfWU76-Y", views:"9.4만회", uploaded:"9시간 전"},
+  {rank:5, title:"Everything we still can't explain | Unexplainable on Netflix", channel:"Vox", id:"k8_evfHqnic", views:"5.8만회", uploaded:"5일 전"},
+  {rank:6, title:"When did we start using passports? - Kristin Surak", channel:"TED-Ed", id:"JhxuP0AuRPA", views:"5.3만회", uploaded:"11시간 전"},
+  {rank:7, title:"The \"Godzilla El Niño\" is coming | The Gray Area", channel:"Vox", id:"Bteh9WJ4Cfo", views:"3.7만회", uploaded:"4일 전"},
+  {rank:8, title:"The Hardest Things Humans Have Ever Tried | The Limit", channel:"Business Insider", id:"KU90Hoq3qCU", views:"2.3만회", uploaded:"3일 전"},
+  {rank:9, title:"Why Is Everyone 'Maxxing' These Days?", channel:"CNBC Make It", id:"SH73brQhLU4", views:"1.5만회", uploaded:"3일 전"},
+  {rank:10, title:"How Lifelike AI Became Amarillo's Face — And A New Gateway To City Services", channel:"Business Insider", id:"6-FkRpJvDEM", views:"7.3천회", uploaded:"1일 전"}
+];
+
+function thumbUrl(id) {
+  return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+}
+
+function renderGrid(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(v => `
+    <a class="card" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+      <div class="thumb-wrap">
+        <span class="rank">${v.rank}</span>
+        <img src="${thumbUrl(v.id)}" alt="${v.title.replace(/"/g, '&quot;')}" loading="lazy">
+      </div>
+      <div class="card-body">
+        <div class="title">${v.title}</div>
+        <div class="meta">
+          <span class="channel">${v.channel}</span>
+          <span>${v.views} · ${v.uploaded}</span>
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+renderGrid('domesticGrid', DOMESTIC);
+renderGrid('intlGrid', INTL);
+</script>
+</body>
+</html>
