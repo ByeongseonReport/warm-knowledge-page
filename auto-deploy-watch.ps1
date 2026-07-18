@@ -1,7 +1,8 @@
-# warm-knowledge-page 자동 배포 워처
-# index.html이 바뀌면 push.ps1(git add/commit/push)을 자동 실행한다.
-# 생성기가 무엇이든/언제든 상관없이 "파일이 바뀌는 순간" 배포되게 하는 이벤트 기반 방식.
-# WarmKnowledgeAutoDeploy 예약 작업(로그온 시 시작)으로 상시 구동됨.
+# warm-knowledge-page auto-deploy watcher
+# When index.html changes, run push.ps1 (git add/commit/push) automatically.
+# Event-driven: deploys the moment the file changes, regardless of what/when generated it.
+# Runs continuously via the WarmKnowledgeAutoDeploy scheduled task (at logon).
+# (Log messages kept ASCII on purpose: PS 5.1 mangles non-ASCII in BOM-less .ps1.)
 
 $ErrorActionPreference = 'Continue'
 $dir  = 'C:\Users\PC\Documents\claude cowork\warm-knowledge-page'
@@ -14,17 +15,17 @@ function Log([string]$m) {
 }
 
 function Deploy([string]$reason) {
-    Log "deploy 트리거 ($reason)"
+    Log "deploy triggered ($reason)"
     try {
         $out = & $push 2>&1 | Out-String
-        Log ("push.ps1 결과: " + ($out.Trim() -replace '\s*\r?\n\s*', ' | '))
+        Log ("push.ps1 -> " + ($out.Trim() -replace '\s*\r?\n\s*', ' | '))
     } catch {
         Log ("ERROR: " + $_.Exception.Message)
     }
 }
 
-Log "=== 워처 시작 ==="
-# 시작 시 1회: PC가 꺼져있던 사이 생성된(미커밋) 변경분을 즉시 반영
+Log "=== watcher started ==="
+# On startup: deploy once to catch any pending (uncommitted) change made while the watcher was down.
 Deploy "startup catch-up"
 
 $w = New-Object System.IO.FileSystemWatcher
@@ -35,15 +36,15 @@ $w.IncludeSubdirectories = $false
 $w.EnableRaisingEvents = $true
 
 while ($true) {
-    # index.html 변경을 최대 30분 대기 (타임아웃되면 재무장)
+    # Wait up to 30 min for an index.html change (re-arm on timeout).
     $r = $w.WaitForChanged([System.IO.WatcherChangeTypes]::All, 1800000)
     if ($r.TimedOut) { continue }
 
-    # 디바운스: 생성기가 여러 번 쓰는 동안 기다렸다가, 조용해지면 배포
+    # Debounce: let the generator finish writing, then deploy once it's quiet.
     Start-Sleep -Seconds 15
     do {
         $r2 = $w.WaitForChanged([System.IO.WatcherChangeTypes]::All, 4000)
     } while (-not $r2.TimedOut)
 
-    Deploy "index.html 변경 감지"
+    Deploy "index.html changed"
 }
