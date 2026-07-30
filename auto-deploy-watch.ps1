@@ -1,11 +1,11 @@
-# warm-knowledge-page auto-deploy watcher
+﻿# warm-knowledge-page auto-deploy watcher
 # When index.html changes, run push.ps1 (git add/commit/push) automatically.
 # Event-driven: deploys the moment the file changes, regardless of what/when generated it.
 # Runs continuously via the WarmKnowledgeAutoDeploy scheduled task (at logon).
 # (Log messages kept ASCII on purpose: PS 5.1 mangles non-ASCII in BOM-less .ps1.)
 
 $ErrorActionPreference = 'Continue'
-$dir  = 'C:\Users\PC\Documents\claude cowork\warm-knowledge-page'
+$dir  = 'C:\Users\PC\Documents\claude cowork\프로젝트\warm-knowledge-page'
 $file = 'index.html'
 $push = Join-Path $dir 'push.ps1'
 $log  = Join-Path $dir 'auto-deploy.log'

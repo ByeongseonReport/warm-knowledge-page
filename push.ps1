@@ -1,4 +1,4 @@
-Set-Location "C:\Users\PC\Documents\claude cowork\warm-knowledge-page"
+﻿Set-Location "C:\Users\PC\Documents\claude cowork\프로젝트\warm-knowledge-page"
 git add -A
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
